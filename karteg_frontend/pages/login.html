@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KarTeg - Login</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --green-main: #3cb531;
+            --green-light: #d6f0d3;
+            --green-pale: #eaf7e8;
+            --green-dark: #2a8a22;
+            --green-input: #c8ecc5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--green-pale);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: "Segoe UI", sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            background: var(--green-light);
+            opacity: .65;
+            border-radius: 24px;
+            z-index: 0;
+        }
+
+        body::before {
+            width: 340px;
+            height: 340px;
+            top: -80px;
+            left: -80px;
+            transform: rotate(30deg);
+        }
+
+        body::after {
+            width: 300px;
+            height: 300px;
+            bottom: -80px;
+            right: -80px;
+            transform: rotate(30deg);
+        }
+
+        .card-login {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 460px;
+            background: white;
+            border-radius: 20px;
+            padding: 48px 44px 40px;
+            box-shadow: 0 8px 40px rgba(60, 181, 49, .13);
+        }
+
+        .logo-box {
+            width: 72px;
+            height: 72px;
+            background: var(--green-main);
+            border-radius: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 14px;
+        }
+
+        .logo-box i {
+            color: white;
+            font-size: 36px;
+        }
+
+        .brand-name {
+            text-align: center;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #111;
+        }
+
+        .brand-sub {
+            text-align: center;
+            color: #666;
+            font-size: .82rem;
+            margin-bottom: 30px;
+        }
+
+        .field {
+            position: relative;
+            margin-bottom: 22px;
+        }
+
+        .field-inner {
+            display: flex;
+            align-items: center;
+            background: var(--green-input);
+            border-radius: 12px;
+            padding: 0 14px;
+            border: 2px solid transparent;
+            transition: .2s;
+        }
+
+        .field-inner:focus-within {
+            border-color: var(--green-main);
+            box-shadow: 0 0 0 4px rgba(60, 181, 49, .15);
+        }
+
+        .field-inner input {
+            border: none;
+            outline: none;
+            background: transparent;
+            width: 100%;
+            padding: 22px 10px 8px;
+            font-size: .95rem;
+        }
+
+        .field label {
+            position: absolute;
+            left: 42px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+            transition: .2s;
+            pointer-events: none;
+        }
+
+        .field-inner input:focus~label,
+        .field-inner input:not(:placeholder-shown)~label {
+            top: 28%;
+            font-size: .68rem;
+            font-weight: bold;
+            color: var(--green-dark);
+            text-transform: uppercase;
+        }
+
+        .icon {
+            color: #666;
+        }
+
+        .toggle-pw {
+            cursor: pointer;
+            color: #666;
+        }
+
+        .btn-login {
+            width: 100%;
+            border: none;
+            background: var(--green-main);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: bold;
+            transition: .2s;
+        }
+
+        .btn-login:hover {
+            background: var(--green-dark);
+        }
+
+        .btn-login:disabled {
+            opacity: .7;
+            cursor: not-allowed;
+        }
+
+        .alert-error {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+            background: #fde8e8;
+            color: #c0392b;
+            border: 1px solid #f5c2c2;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 24px;
+            font-size: .8rem;
+            color: #999;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card-login">
+
+        <div class="logo-box">
+            <i class="bi bi-currency-dollar"></i>
+        </div>
+
+        <div class="brand-name">
+            KarTeg
+        </div>
+
+        <div class="brand-sub">
+            Aplikasi pengelolaan transaksi penjualan yang menyediakan fitur analisis berbasis data.
+        </div>
+
+        <div id="alertError" class="alert-error">
+            <i class="bi bi-exclamation-circle-fill"></i>
+            <span id="alertMsg"></span>
+        </div>
+
+        <form id="loginForm">
+
+            <div class="field">
+                <div class="field-inner">
+                    <i class="bi bi-person-fill icon"></i>
+                    <input type="text" id="username" placeholder=" " autocomplete="off" required>
+                    <label for="username">Username</label>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="field-inner">
+                    <i class="bi bi-lock-fill icon"></i>
+                    <input type="password" id="password" placeholder=" " required>
+                    <label for="password">Password</label>
+                    <i class="bi bi-eye-slash toggle-pw" id="togglePw"></i>
+                </div>
+            </div>
+
+            <button type="submit" id="btnLogin" class="btn-login">
+                Login Menuju Dashboard <i class="bi bi-arrow-right"></i>
+            </button>
+
+        </form>
+
+        <div class="footer-text">
+            © 2026 | Lazy_DevTeam
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="../assets/js/config.js"></script>
+    <script src="../assets/js/helper.js"></script>
+    <script src="../assets/js/auth.js"></script>
+
+    <script>
+        // Fitur Toggle Password Mata Terbuka/Tertutup
+        document.getElementById("togglePw").addEventListener("click", function () {
+            const password = document.getElementById("password");
+            const hidden = password.type === "password";
+            password.type = hidden ? "text" : "password";
+            this.className = hidden ? "bi bi-eye toggle-pw" : "bi bi-eye-slash toggle-pw";
+        });
+
+        // Proses Form Pengiriman Login
+        document.getElementById("loginForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value;
+            const alertBox = document.getElementById("alertError");
+            const alertMsg = document.getElementById("alertMsg");
+            const btn = document.getElementById("btnLogin");
+
+            alertBox.style.display = "none";
+
+            if (!username || !password) {
+                alertMsg.textContent = "Username dan password wajib diisi.";
+                alertBox.style.display = "flex";
+                return;
+            }
+
+            try {
+                btn.disabled = true;
+                btn.innerHTML = 'Memproses... <i class="bi bi-hourglass-split"></i>';
+
+                const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                    method: "POST",
+                    credentials: "include", // Mengizinkan Flask Cookie tersimpan di browser
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const result = await response.json();
+
+                if (result.status !== "success") {
+                    alertMsg.textContent = result.message;
+                    alertBox.style.display = "flex";
+                    btn.disabled = false;
+                    btn.innerHTML = 'Login Menuju Dashboard <i class="bi bi-arrow-right"></i>';
+                    return;
+                }
+
+                // ====================================================================
+                // 💡 REVISI AMAN: Mengubah localStorage menjadi sessionStorage
+                // ====================================================================
+                sessionStorage.setItem("role", result.data.role);
+                sessionStorage.setItem("isLoggedIn", "true");
+
+                console.log("Menyimpan data otentikasi ke session... Mengalihkan halaman...");
+
+                // Pengalihan halaman sesuai role
+                if (result.data.role === "admin") {
+                    window.location.href = "dashboard_admin.html";
+                } else {
+                    window.location.href = "dashboard_transaksi_kasir.html";
+                }
+
+            } catch (error) {
+                console.error("Login Event Error:", error);
+                alertMsg.textContent = "Tidak dapat terhubung ke server Flask.";
+                alertBox.style.display = "flex";
+                btn.disabled = false;
+                btn.innerHTML = 'Login Menuju Dashboard <i class="bi bi-arrow-right"></i>';
+            }
+        });
+    </script>
+
+</body>
+
+</html>
